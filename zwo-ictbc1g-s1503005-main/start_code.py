@@ -56,10 +56,9 @@ def maximale_fysieke_belasting():
         
 def pauze_opgesplitst():
     if personeelslid['pauze_opsplitsen'] == 1:
-        is_pauze_opgesplitst = "Ja"
+        return True
     else:
-        is_pauze_opgesplitst = "Nee"
-    return is_pauze_opgesplitst
+        return False
 
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
@@ -70,13 +69,13 @@ db.close()
 dagtakenlijst = {
     "personeelsgegevens" : {
         "naam": personeelslid['naam'], # voorbeeld van hoe je bij een eigenschap komt
-        "werktijd": str(personeelslid['werktijd']) + " minuten",
+        "werktijd": personeelslid['werktijd'],
         "beroepstype": personeelslid['beroepstype'],
         "bevoegdheid": personeelslid['bevoegdheid'],
         "specialist in attracties": personeelslid['specialist_in_attracties'],
         "pauze opsplitsen": pauze_opgesplitst(),
-        "leeftijd": str(personeelslid['leeftijd']) + " jaar",
-        "maximale fysieke belasting": str(maximale_fysieke_belasting()) + " kilo"
+        "leeftijd": personeelslid['leeftijd'],
+        "maximale fysieke belasting": maximale_fysieke_belasting()
 
         #"verlaagde fysieke belasting": personeelslid['verlaagde_fysieke_belasting']
     },

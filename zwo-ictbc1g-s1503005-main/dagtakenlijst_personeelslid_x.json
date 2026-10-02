@@ -1,13 +1,13 @@
 {
     "personeelsgegevens": {
         "naam": "Aisha Rahmani",
-        "werktijd": "300 minuten",
+        "werktijd": 300,
         "beroepstype": "Elektrisch Monteur",
         "bevoegdheid": "Junior",
         "specialist in attracties": "Magic Forest",
-        "pauze opsplitsen": "Nee",
-        "leeftijd": "26 jaar",
-        "maximale fysieke belasting": "40 kilo"
+        "pauze opsplitsen": false,
+        "leeftijd": 26,
+        "maximale fysieke belasting": 40
     },
     "weergegevens": {},
     "dagtaken": [],
