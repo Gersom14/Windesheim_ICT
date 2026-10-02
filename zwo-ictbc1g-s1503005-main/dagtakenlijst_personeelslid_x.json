@@ -1,0 +1,15 @@
+{
+    "personeelsgegevens": {
+        "naam": "Diego Martinez",
+        "werktijd": 360,
+        "beroepstype": "Schilder",
+        "bevoegdheid": "Senior",
+        "specialist in attracties": "",
+        "pauze opsplitsen": 1,
+        "leeftijd": 53,
+        "verlaagde fysieke belasting": 0
+    },
+    "weergegevens": {},
+    "dagtaken": [],
+    "totale_duur": 0
+}
