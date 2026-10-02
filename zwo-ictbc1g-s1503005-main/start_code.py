@@ -17,7 +17,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 3 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = 2 # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -42,6 +42,25 @@ onderhoudstaken = db.execute_query(select_query)
 # print de omschrijving van de eerste onderhoudstaak
 print(onderhoudstaken[0]["omschrijving"])
 
+# functie voor het bepalen van de maximale fysieke belasting
+def maximale_fysieke_belasting():
+    if personeelslid['verlaagde_fysieke_belasting'] == 0:
+        if personeelslid['leeftijd'] <= 24:
+            return 25
+        elif personeelslid['leeftijd'] >= 25 and personeelslid['leeftijd'] <= 50:
+            return 40
+        elif personeelslid['leeftijd'] >= 51:
+            return 15
+    else:
+        return personeelslid['verlaagde_fysieke_belasting']
+        
+def pauze_opgesplitst():
+    if personeelslid['pauze_opsplitsen'] == 1:
+        is_pauze_opgesplitst = "Ja"
+    else:
+        is_pauze_opgesplitst = "Nee"
+    return is_pauze_opgesplitst
+
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
 
@@ -51,13 +70,15 @@ db.close()
 dagtakenlijst = {
     "personeelsgegevens" : {
         "naam": personeelslid['naam'], # voorbeeld van hoe je bij een eigenschap komt
-        "werktijd": personeelslid['werktijd'],
+        "werktijd": str(personeelslid['werktijd']) + " minuten",
         "beroepstype": personeelslid['beroepstype'],
         "bevoegdheid": personeelslid['bevoegdheid'],
         "specialist in attracties": personeelslid['specialist_in_attracties'],
-        "pauze opsplitsen": personeelslid['pauze_opsplitsen'],
-        "leeftijd": personeelslid['leeftijd'],
-        "verlaagde fysieke belasting": personeelslid['verlaagde_fysieke_belasting']
+        "pauze opsplitsen": pauze_opgesplitst(),
+        "leeftijd": str(personeelslid['leeftijd']) + " jaar",
+        "maximale fysieke belasting": str(maximale_fysieke_belasting()) + " kilo"
+
+        #"verlaagde fysieke belasting": personeelslid['verlaagde_fysieke_belasting']
     },
     "weergegevens" : {
         # STAP 4: vul aan met weergegevens (DP9)

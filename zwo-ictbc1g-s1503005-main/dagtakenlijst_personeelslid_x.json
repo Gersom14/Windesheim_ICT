@@ -1,13 +1,13 @@
 {
     "personeelsgegevens": {
-        "naam": "Diego Martinez",
-        "werktijd": 360,
-        "beroepstype": "Schilder",
-        "bevoegdheid": "Senior",
-        "specialist in attracties": "",
-        "pauze opsplitsen": 1,
-        "leeftijd": 53,
-        "verlaagde fysieke belasting": 0
+        "naam": "Aisha Rahmani",
+        "werktijd": "300 minuten",
+        "beroepstype": "Elektrisch Monteur",
+        "bevoegdheid": "Junior",
+        "specialist in attracties": "Magic Forest",
+        "pauze opsplitsen": "Nee",
+        "leeftijd": "26 jaar",
+        "maximale fysieke belasting": "40 kilo"
     },
     "weergegevens": {},
     "dagtaken": [],
