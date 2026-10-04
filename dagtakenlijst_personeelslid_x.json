@@ -1,0 +1,36 @@
+{
+    "personeelsgegevens": {
+        "naam": "Angela Bakker",
+        "werktijd": 360,
+        "beroepstype": "Onderhoudsmonteur",
+        "bevoegdheid": "Stagiair",
+        "specialist in attracties": "",
+        "pauze opsplitsen": true,
+        "leeftijd": 32,
+        "maximale fysieke belasting": 40
+    },
+    "weergegevens": {},
+    "dagtaken": [
+        {
+            "omschrijving": "Herstel van veiligheidsbeugels",
+            "duur": 90,
+            "prioriteit": "laag",
+            "beroepstype": "Onderhoudsmonteur",
+            "bevoegdheid": "Stagiair",
+            "fysieke_belasting": 10,
+            "attractie": "Family Carousel",
+            "is_buitenwerk": 0
+        },
+        {
+            "omschrijving": "Reiniging van kleine onderdelen",
+            "duur": 30,
+            "prioriteit": "laag",
+            "beroepstype": "Onderhoudsmonteur",
+            "bevoegdheid": "Stagiair",
+            "fysieke_belasting": 5,
+            "attractie": null,
+            "is_buitenwerk": 1
+        }
+    ],
+    "totale_duur": 0
+}

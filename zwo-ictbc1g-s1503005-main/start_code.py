@@ -10,14 +10,14 @@ from database_wrapper import Database
 # -----------------------------------------
 # parameters voor connectie met de database
 db = Database(host="localhost", gebruiker="root", wachtwoord="fekpon-qAvhem-kotbe9", database="attractiepark_casus_b")
-# altijd verbinding openen om query's uit te voeren
+# altijd verbinding openen om query"s uit te voeren
 db.connect()
 
 
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 2 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = 4 # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -27,39 +27,85 @@ resultaat = db.execute_query(select_query)
 personeelslid = resultaat[0]
 
 # voorbeeld van hoe je bij een eigenschap komt
-print(personeelslid['naam'])
+print(personeelslid["naam"])
 
 # -----------------------------------------
 # Haal alle onderhoudstaken op
 # -----------------------------------------
 # pas deze query aan en voeg queries toe om de juiste onderhoudstaken op te halen
-select_query = "SELECT * FROM onderhoudstaak"
+select_query = "SELECT * FROM onderhoudstaak WHERE afgerond = 0" # Alle onafgeronde onderhoudstaken
 onderhoudstaken = db.execute_query(select_query)
 
 # print de resultaten van de query op een overzichtelijke manier
-##pprint.pp(onderhoudstaken) 
+#pprint.pp(onderhoudstaken) 
 
 # print de omschrijving van de eerste onderhoudstaak
 print(onderhoudstaken[0]["omschrijving"])
 
 # functie voor het bepalen van de maximale fysieke belasting
 def maximale_fysieke_belasting():
-    if personeelslid['verlaagde_fysieke_belasting'] == 0:
-        if personeelslid['leeftijd'] <= 24:
+    if personeelslid["verlaagde_fysieke_belasting"] == 0:
+        if personeelslid["leeftijd"] <= 24:
             return 25
-        elif personeelslid['leeftijd'] >= 25 and personeelslid['leeftijd'] <= 50:
+        elif personeelslid["leeftijd"] >= 25 and personeelslid["leeftijd"] <= 50:
             return 40
-        elif personeelslid['leeftijd'] >= 51:
+        elif personeelslid["leeftijd"] >= 51:
             return 15
     else:
-        return personeelslid['verlaagde_fysieke_belasting']
+        return personeelslid["verlaagde_fysieke_belasting"]
         
 def pauze_opgesplitst():
-    if personeelslid['pauze_opsplitsen'] == 1:
+    if personeelslid["pauze_opsplitsen"] == 1:
         return True
     else:
         return False
 
+#bevoegdheid wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
+def bevoegdheid_bepalen_personeelslid():
+    if personeelslid["bevoegdheid"] == "Senior":
+        return 1;
+    elif personeelslid["bevoegdheid"] == "Medior":
+        return 2;
+    elif personeelslid["bevoegdheid"] == "Junior":
+        return 3;
+    elif personeelslid["bevoegdheid"] == "Stagiair":
+        return 4;
+
+def bevoegdheid_bepalen_taak(bevoegdheid):
+    for taak in onderhoudstaken:
+        if bevoegdheid == "Senior":
+            return 1;
+        if bevoegdheid == "Medior":
+            return 2;
+        if bevoegdheid == "Junior":
+            return 3;
+        if bevoegdheid == "Stagiair":
+            return 4;
+
+def onderhoudstaken_verdelen():
+    passende_taken = []
+
+    for taak in onderhoudstaken:
+         if (taak["beroepstype"] == personeelslid["beroepstype"] 
+             and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
+             and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
+              passende_taken.append({
+                   "omschrijving" : taak["omschrijving"],
+                   "duur" : taak["duur"],
+                   "prioriteit" : taak["prioriteit"],
+                   "beroepstype" : taak["beroepstype"],
+                   "bevoegdheid" : taak["bevoegdheid"],
+                   "fysieke_belasting": taak["fysieke_belasting"],
+                   "attractie": taak["attractie"],
+                   "is_buitenwerk": taak["is_buitenwerk"]
+              })
+              
+    return passende_taken
+              
+
+            
+        
+print(onderhoudstaken_verdelen())        
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
 
@@ -68,25 +114,36 @@ db.close()
 # verzamel alle benodigde gegevens in een dictionary
 dagtakenlijst = {
     "personeelsgegevens" : {
-        "naam": personeelslid['naam'], # voorbeeld van hoe je bij een eigenschap komt
-        "werktijd": personeelslid['werktijd'],
-        "beroepstype": personeelslid['beroepstype'],
-        "bevoegdheid": personeelslid['bevoegdheid'],
-        "specialist in attracties": personeelslid['specialist_in_attracties'],
+        "naam": personeelslid["naam"], # voorbeeld van hoe je bij een eigenschap komt
+        "werktijd": personeelslid["werktijd"],
+        "beroepstype": personeelslid["beroepstype"],
+        "bevoegdheid": personeelslid["bevoegdheid"],
+        "specialist in attracties": personeelslid["specialist_in_attracties"],
         "pauze opsplitsen": pauze_opgesplitst(),
-        "leeftijd": personeelslid['leeftijd'],
+        "leeftijd": personeelslid["leeftijd"],
         "maximale fysieke belasting": maximale_fysieke_belasting()
 
-        #"verlaagde fysieke belasting": personeelslid['verlaagde_fysieke_belasting']
+        #"verlaagde fysieke belasting": personeelslid["verlaagde_fysieke_belasting"]
     },
     "weergegevens" : {
         # STAP 4: vul aan met weergegevens (DP9)
     }, 
-    "dagtaken": [] # STAP 2: hier komt een lijst met alle dagtaken
+    "dagtaken": onderhoudstaken_verdelen()
+        # TO-DO
+        # Een dagtaak moet op meerdere punten gestorteerd worden
+        # (AF) Het beroepstype past bij het beroep van het personeelslid 
+        # (AF) De taak heeft een lagere fysieke belasting dan de maximale belasting van het personeelslid
+        # (AF) Het personeel is bevoegd voor de taak
+        # Er moet op basis van de beschikbare werktijd van het personeel bepaald worden hoeveel onderhoudstaken in het programma komen
+        # Verschillende prioriteiteslevels
+        # De laatste taak moet verplicht een lage prioriteit hebben en max 30 minuten duren
+    
+
+     # STAP 2: hier komt een lijst met alle dagtaken
     ,
     "totale_duur": 0 # STAP 3: aanpassen naar daadwerkelijke totale duur
 }
 
 # uiteindelijk schrijven we de dictionary weg naar een JSON-bestand, die kan worden ingelezen door de acceptatieomgeving
-with open('dagtakenlijst_personeelslid_x.json', 'w') as json_bestand_uitvoer:
+with open("dagtakenlijst_personeelslid_x.json", "w") as json_bestand_uitvoer:
     json.dump(dagtakenlijst, json_bestand_uitvoer, indent=4)
