@@ -1,36 +1,46 @@
 {
     "personeelsgegevens": {
-        "naam": "Angela Bakker",
-        "werktijd": 360,
-        "beroepstype": "Onderhoudsmonteur",
-        "bevoegdheid": "Stagiair",
-        "specialist in attracties": "",
-        "pauze opsplitsen": true,
-        "leeftijd": 32,
-        "maximale fysieke belasting": 40
+        "naam": "Piet de Jong",
+        "werktijd": 240,
+        "beroepstype": "Mechanisch Monteur",
+        "bevoegdheid": "Senior",
+        "specialist in attracties": "Mega Spin,River Rapids,Twister",
+        "pauze opsplitsen": false,
+        "leeftijd": 45,
+        "maximale fysieke belasting": 30
     },
     "weergegevens": {},
     "dagtaken": [
         {
-            "omschrijving": "Herstel van veiligheidsbeugels",
-            "duur": 90,
-            "prioriteit": "laag",
-            "beroepstype": "Onderhoudsmonteur",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 10,
-            "attractie": "Family Carousel",
+            "omschrijving": "Mechanisch onderhoud aan scharnieren",
+            "duur": 45,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 25,
+            "attractie": "Twister",
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Reiniging van kleine onderdelen",
-            "duur": 30,
+            "omschrijving": "Reparatie aan karretjes",
+            "duur": 120,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 20,
+            "attractie": "Galactic Journey",
+            "is_buitenwerk": 1
+        },
+        {
+            "omschrijving": "Reparatie van waterkanonnen",
+            "duur": 60,
             "prioriteit": "laag",
-            "beroepstype": "Onderhoudsmonteur",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 5,
-            "attractie": null,
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 15,
+            "attractie": "Mega Spin",
             "is_buitenwerk": 1
         }
     ],
-    "totale_duur": 0
+    "totale_duur": 225
 }

@@ -17,7 +17,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 4 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = 1 # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -84,25 +84,33 @@ def bevoegdheid_bepalen_taak(bevoegdheid):
 
 def onderhoudstaken_verdelen():
     passende_taken = []
-
+    resterende_werktijd = personeelslid["werktijd"]
     for taak in onderhoudstaken:
          if (taak["beroepstype"] == personeelslid["beroepstype"] 
              and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
              and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
-              passende_taken.append({
-                   "omschrijving" : taak["omschrijving"],
-                   "duur" : taak["duur"],
-                   "prioriteit" : taak["prioriteit"],
-                   "beroepstype" : taak["beroepstype"],
-                   "bevoegdheid" : taak["bevoegdheid"],
-                   "fysieke_belasting": taak["fysieke_belasting"],
-                   "attractie": taak["attractie"],
-                   "is_buitenwerk": taak["is_buitenwerk"]
-              })
-              
-    return passende_taken
-              
 
+            if taak['duur'] > resterende_werktijd:
+                continue
+            
+            passende_taken.append({
+                "omschrijving" : taak["omschrijving"],
+                "duur" : taak["duur"],
+                "prioriteit" : taak["prioriteit"],
+                "beroepstype" : taak["beroepstype"],
+                "bevoegdheid" : taak["bevoegdheid"],
+                "fysieke_belasting": taak["fysieke_belasting"],
+                "attractie": taak["attractie"],
+                "is_buitenwerk": taak["is_buitenwerk"]
+            })
+
+            resterende_werktijd -= taak["duur"]
+            totale_duur = personeelslid["werktijd"] - resterende_werktijd
+                
+
+    return passende_taken, totale_duur
+              
+passende_taken, totale_duur = onderhoudstaken_verdelen()
             
         
 print(onderhoudstaken_verdelen())        
@@ -128,7 +136,7 @@ dagtakenlijst = {
     "weergegevens" : {
         # STAP 4: vul aan met weergegevens (DP9)
     }, 
-    "dagtaken": onderhoudstaken_verdelen()
+    "dagtaken": passende_taken
         # TO-DO
         # Een dagtaak moet op meerdere punten gestorteerd worden
         # (AF) Het beroepstype past bij het beroep van het personeelslid 
@@ -141,7 +149,7 @@ dagtakenlijst = {
 
      # STAP 2: hier komt een lijst met alle dagtaken
     ,
-    "totale_duur": 0 # STAP 3: aanpassen naar daadwerkelijke totale duur
+    "totale_duur": totale_duur # STAP 3: aanpassen naar daadwerkelijke totale duur
 }
 
 # uiteindelijk schrijven we de dictionary weg naar een JSON-bestand, die kan worden ingelezen door de acceptatieomgeving
