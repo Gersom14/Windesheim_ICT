@@ -9,7 +9,12 @@
         "leeftijd": 32,
         "maximale fysieke belasting": 40
     },
-    "weergegevens": {},
+    "weergegevens": {
+        "weergegevens": {
+            "temperatuur": 22.7,
+            "kans_op_regen": 6
+        }
+    },
     "dagtaken": [
         {
             "omschrijving": "Herstel van veiligheidsbeugels",

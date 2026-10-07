@@ -3,6 +3,8 @@ from pathlib import Path
 import json
 import pprint
 from database_wrapper import Database
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 
 # -----------------------------------------
@@ -93,6 +95,30 @@ def maak_dagtaak(taak):
         "attractie": taak["attractie"],
         "is_buitenwerk": taak["is_buitenwerk"]
     }
+
+def haal_weergegevens_op(breedtegraad, lengtegraad): # Coordinaten op basis van database
+    parameters = urlencode({
+        "latitude": breedtegraad,
+        "longitude": lengtegraad,
+        "daily": "temperature_2m_max,precipitation_probability_mean",
+        "timezone": "Europe/Amsterdam",
+        "forecast_days": 1
+    })
+
+    url = "https://api.open-meteo.com/v1/forecast?" + parameters
+
+    with urlopen(url, timeout=10) as antwoord:
+        weerdata = json.load(antwoord)
+
+    return {
+        "temperatuur": weerdata["daily"]["temperature_2m_max"][0],
+        "kans_op_regen": weerdata["daily"]["precipitation_probability_mean"][0]
+    }
+
+breedtegraad = 52.5125
+lengtegraad = 6.09444
+weergegevens = haal_weergegevens_op(breedtegraad, lengtegraad)
+
 
 specialistische_attracties = personeelslid["specialist_in_attracties"].split(",") # Split bij elke komma
 hoog_specialistisch = []
@@ -193,7 +219,7 @@ dagtakenlijst = {
         "maximale fysieke belasting": maximale_fysieke_belasting()
     },
     "weergegevens" : {
-        # STAP 4: vul aan met weergegevens (DP9)
+        "weergegevens": weergegevens
     }, 
     "dagtaken": passende_taken
         # TO-DO
