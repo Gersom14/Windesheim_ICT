@@ -19,7 +19,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 4 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = input("Voor welk personeelslid wil je een dagtakenlijst aanmaken? ") # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -28,21 +28,12 @@ resultaat = db.execute_query(select_query)
 # haal de eerste rij uit het resultaat
 personeelslid = resultaat[0]
 
-# voorbeeld van hoe je bij een eigenschap komt
-print(personeelslid["naam"])
-
 # -----------------------------------------
 # Haal alle onderhoudstaken op
 # -----------------------------------------
 # pas deze query aan en voeg queries toe om de juiste onderhoudstaken op te halen
 select_query = "SELECT * FROM onderhoudstaak WHERE afgerond = 0" # Alle onafgeronde onderhoudstaken
 onderhoudstaken = db.execute_query(select_query)
-
-# print de resultaten van de query op een overzichtelijke manier
-#pprint.pp(onderhoudstaken) 
-
-# print de omschrijving van de eerste onderhoudstaak
-print(onderhoudstaken[0]["omschrijving"])
 
 # Functie voor het bepalen van de maximale fysieke belasting
 def maximale_fysieke_belasting():
@@ -150,14 +141,14 @@ def onderhoudstaken_verdelen():
     laatste_taak = ""
 
     # Bepalen van de laatste taak
-    for taak in laag_overig + laag_specialistisch: # Eerst
+    for taak in laag_overig: 
         if (taak["duur"] <= 30
             and taak["duur"] <= personeelslid["werktijd"]
             and taak["beroepstype"] == personeelslid["beroepstype"]
             and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
             and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
             laatste_taak = taak
-            break # 
+            break 
 
     resterende_werktijd -= laatste_taak["duur"]
 
@@ -213,14 +204,11 @@ dagtakenlijst = {
         "werktijd": personeelslid["werktijd"],
         "beroepstype": personeelslid["beroepstype"],
         "bevoegdheid": personeelslid["bevoegdheid"],
-        "specialist in attracties": personeelslid["specialist_in_attracties"],
-        "pauze opsplitsen": pauze_opgesplitst(),
-        "leeftijd": personeelslid["leeftijd"],
-        "maximale fysieke belasting": maximale_fysieke_belasting()
+        "specialist_in_attracties": personeelslid["specialist_in_attracties"],
+        "pauze_opsplitsen": pauze_opgesplitst(),
+        "max_fysieke_belasting": maximale_fysieke_belasting()
     },
-    "weergegevens" : {
-        "weergegevens": weergegevens
-    }, 
+    "weergegevens" : weergegevens, 
     "dagtaken": passende_taken
         # TO-DO
         # Een dagtaak moet op meerdere punten gestorteerd worden

@@ -1,45 +1,58 @@
 {
     "personeelsgegevens": {
-        "naam": "Angela Bakker",
-        "werktijd": 360,
-        "beroepstype": "Onderhoudsmonteur",
-        "bevoegdheid": "Stagiair",
-        "specialist in attracties": "",
-        "pauze opsplitsen": true,
-        "leeftijd": 32,
-        "maximale fysieke belasting": 40
+        "naam": "Piet de Jong",
+        "werktijd": 240,
+        "beroepstype": "Mechanisch Monteur",
+        "bevoegdheid": "Senior",
+        "specialist_in_attracties": "Mega Spin,River Rapids,Twister",
+        "pauze_opsplitsen": false,
+        "max_fysieke_belasting": 30
     },
     "weergegevens": {
-        "weergegevens": {
-            "temperatuur": 22.7,
-            "kans_op_regen": 6
-        }
+        "temperatuur": 22.5,
+        "kans_op_regen": 6
     },
     "dagtaken": [
         {
-            "omschrijving": "Herstel van veiligheidsbeugels",
-            "duur": 90,
-            "prioriteit": "laag",
-            "beroepstype": "Onderhoudsmonteur",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 10,
-            "attractie": "Family Carousel",
+            "omschrijving": "Mechanisch onderhoud aan scharnieren",
+            "duur": 45,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 25,
+            "attractie": "Twister",
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Pauze",
-            "duur": 30
+            "omschrijving": "Reparatie aan karretjes",
+            "duur": 120,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 20,
+            "attractie": "Galactic Journey",
+            "is_buitenwerk": 1
         },
         {
-            "omschrijving": "Reiniging van kleine onderdelen",
+            "omschrijving": "Herstel van dakconstructie",
+            "duur": 30,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 25,
+            "attractie": null,
+            "is_buitenwerk": 0
+        },
+        {
+            "omschrijving": "Smering van tandwielen",
             "duur": 30,
             "prioriteit": "laag",
-            "beroepstype": "Onderhoudsmonteur",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 5,
-            "attractie": null,
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 8,
+            "attractie": "Rocket Ride",
             "is_buitenwerk": 1
         }
     ],
-    "totale_duur": 120
+    "totale_duur": 225
 }
