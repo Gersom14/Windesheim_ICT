@@ -22,16 +22,6 @@
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Controle van elektrische schakelaars",
-            "duur": 30,
-            "prioriteit": "laag",
-            "beroepstype": "Elektrisch Monteur",
-            "bevoegdheid": "Junior",
-            "fysieke_belasting": 5,
-            "attractie": "Magic Forest",
-            "is_buitenwerk": 1
-        },
-        {
             "omschrijving": "Controle op veiligheidssensoren",
             "duur": 120,
             "prioriteit": "laag",
@@ -49,6 +39,16 @@
             "bevoegdheid": "Junior",
             "fysieke_belasting": 10,
             "attractie": null,
+            "is_buitenwerk": 1
+        },
+        {
+            "omschrijving": "Controle van elektrische schakelaars",
+            "duur": 30,
+            "prioriteit": "laag",
+            "beroepstype": "Elektrisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 5,
+            "attractie": "Magic Forest",
             "is_buitenwerk": 1
         }
     ],

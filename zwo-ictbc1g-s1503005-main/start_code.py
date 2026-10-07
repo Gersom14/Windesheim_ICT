@@ -60,7 +60,7 @@ def pauze_opgesplitst():
     else:
         return False
 
-#bevoegdheid wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
+# Bevoegdheid van het personeelslid wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
 def bevoegdheid_bepalen_personeelslid():
     if personeelslid["bevoegdheid"] == "Senior":
         return 1;
@@ -71,8 +71,8 @@ def bevoegdheid_bepalen_personeelslid():
     elif personeelslid["bevoegdheid"] == "Stagiair":
         return 4;
 
+# Bevoegdheid van de taak wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
 def bevoegdheid_bepalen_taak(bevoegdheid):
-    for taak in onderhoudstaken:
         if bevoegdheid == "Senior":
             return 1;
         if bevoegdheid == "Medior":
@@ -82,6 +82,17 @@ def bevoegdheid_bepalen_taak(bevoegdheid):
         if bevoegdheid == "Stagiair":
             return 4;
 
+def maak_dagtaak(taak):
+    return { 
+        "omschrijving" : taak["omschrijving"],
+        "duur" : taak["duur"],
+        "prioriteit" : taak["prioriteit"],
+        "beroepstype" : taak["beroepstype"],
+        "bevoegdheid" : taak["bevoegdheid"],
+        "fysieke_belasting": taak["fysieke_belasting"],
+        "attractie": taak["attractie"],
+        "is_buitenwerk": taak["is_buitenwerk"]
+    }
 
 specialistische_attracties = personeelslid["specialist_in_attracties"].split(",") # Split bij elke komma
 hoog_specialistisch = []
@@ -106,10 +117,29 @@ for taak in onderhoudstaken:
 
 gesorteerde_taken = hoog_specialistisch + hoog_overig + laag_specialistisch + laag_overig # List op volgorde van prioriteit, hoog naar laag
 
+# Hier worden de taken uiteindelijk onder verdeeld op basis van meerdere criteria
 def onderhoudstaken_verdelen():
     passende_taken = []
     resterende_werktijd = personeelslid["werktijd"]
+    laatste_taak = ""
+
+    # Bepalen van de laatste taak
+    for taak in laag_overig + laag_specialistisch: # Eerst
+        if (taak["duur"] <= 30
+            and taak["duur"] <= personeelslid["werktijd"]
+            and taak["beroepstype"] == personeelslid["beroepstype"]
+            and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
+            and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
+            laatste_taak = taak
+            break # 
+
+    resterende_werktijd -= laatste_taak["duur"]
+
     for taak in gesorteerde_taken: 
+         # De laatste taak moet niet nog een x voorkomen
+         if taak["id"] == laatste_taak["id"]:
+             continue
+         
          if (taak["beroepstype"] == personeelslid["beroepstype"] 
              and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
              and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
@@ -117,20 +147,11 @@ def onderhoudstaken_verdelen():
             if taak['duur'] > resterende_werktijd:
                 continue
             
-            passende_taken.append({
-                "omschrijving" : taak["omschrijving"],
-                "duur" : taak["duur"],
-                "prioriteit" : taak["prioriteit"],
-                "beroepstype" : taak["beroepstype"],
-                "bevoegdheid" : taak["bevoegdheid"],
-                "fysieke_belasting": taak["fysieke_belasting"],
-                "attractie": taak["attractie"],
-                "is_buitenwerk": taak["is_buitenwerk"]
-            })
+            passende_taken.append(maak_dagtaak(taak))
 
             resterende_werktijd -= taak["duur"]
-            totale_duur = personeelslid["werktijd"] - resterende_werktijd
-                
+    passende_taken.append(maak_dagtaak(laatste_taak))
+    totale_duur = personeelslid["werktijd"] - resterende_werktijd
 
     return passende_taken, totale_duur
               
