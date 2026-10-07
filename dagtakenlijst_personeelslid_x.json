@@ -1,46 +1,56 @@
 {
     "personeelsgegevens": {
-        "naam": "Piet de Jong",
-        "werktijd": 240,
-        "beroepstype": "Mechanisch Monteur",
-        "bevoegdheid": "Senior",
-        "specialist in attracties": "Mega Spin,River Rapids,Twister",
+        "naam": "Aisha Rahmani",
+        "werktijd": 300,
+        "beroepstype": "Elektrisch Monteur",
+        "bevoegdheid": "Junior",
+        "specialist in attracties": "Magic Forest",
         "pauze opsplitsen": false,
-        "leeftijd": 45,
-        "maximale fysieke belasting": 30
+        "leeftijd": 26,
+        "maximale fysieke belasting": 40
     },
     "weergegevens": {},
     "dagtaken": [
         {
-            "omschrijving": "Mechanisch onderhoud aan scharnieren",
-            "duur": 45,
+            "omschrijving": "Inspectie van kabels",
+            "duur": 75,
             "prioriteit": "hoog",
-            "beroepstype": "Mechanisch Monteur",
-            "bevoegdheid": "Senior",
-            "fysieke_belasting": 25,
-            "attractie": "Twister",
+            "beroepstype": "Elektrisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 15,
+            "attractie": "Magic Forest",
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Reparatie aan karretjes",
-            "duur": 120,
-            "prioriteit": "hoog",
-            "beroepstype": "Mechanisch Monteur",
-            "bevoegdheid": "Senior",
-            "fysieke_belasting": 20,
-            "attractie": "Galactic Journey",
+            "omschrijving": "Controle van elektrische schakelaars",
+            "duur": 30,
+            "prioriteit": "laag",
+            "beroepstype": "Elektrisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 5,
+            "attractie": "Magic Forest",
             "is_buitenwerk": 1
         },
         {
-            "omschrijving": "Reparatie van waterkanonnen",
-            "duur": 60,
+            "omschrijving": "Controle op veiligheidssensoren",
+            "duur": 120,
             "prioriteit": "laag",
-            "beroepstype": "Mechanisch Monteur",
-            "bevoegdheid": "Senior",
+            "beroepstype": "Elektrisch Monteur",
+            "bevoegdheid": "Junior",
             "fysieke_belasting": 15,
-            "attractie": "Mega Spin",
+            "attractie": "Sky Diver",
+            "is_buitenwerk": 1
+        },
+        {
+            "omschrijving": "Controle van algemene verlichting",
+            "duur": 50,
+            "prioriteit": "laag",
+            "beroepstype": "Elektrisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 10,
+            "attractie": null,
             "is_buitenwerk": 1
         }
     ],
-    "totale_duur": 225
+    "totale_duur": 275
 }

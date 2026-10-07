@@ -17,7 +17,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 1 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = 2 # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -82,10 +82,34 @@ def bevoegdheid_bepalen_taak(bevoegdheid):
         if bevoegdheid == "Stagiair":
             return 4;
 
+
+specialistische_attracties = personeelslid["specialist_in_attracties"].split(",") # Split bij elke komma
+hoog_specialistisch = []
+hoog_overig = []
+laag_specialistisch = []
+laag_overig = []
+
+# Sorteren van de onderhoudstaken op of de taak specialistisch is en de prioriteit van de taak
+for taak in onderhoudstaken:
+    is_specialistisch = taak["attractie"] in specialistische_attracties
+
+    if taak["prioriteit"] == "hoog":
+        if is_specialistisch:
+            hoog_specialistisch.append(taak)
+        else:
+            hoog_overig.append(taak)
+    else:
+        if is_specialistisch:
+            laag_specialistisch.append(taak)
+        else:
+            laag_overig.append(taak)
+
+gesorteerde_taken = hoog_specialistisch + hoog_overig + laag_specialistisch + laag_overig # List op volgorde van prioriteit, hoog naar laag
+
 def onderhoudstaken_verdelen():
     passende_taken = []
     resterende_werktijd = personeelslid["werktijd"]
-    for taak in onderhoudstaken:
+    for taak in gesorteerde_taken: 
          if (taak["beroepstype"] == personeelslid["beroepstype"] 
              and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
              and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
@@ -113,7 +137,7 @@ def onderhoudstaken_verdelen():
 passende_taken, totale_duur = onderhoudstaken_verdelen()
             
         
-print(onderhoudstaken_verdelen())        
+# print(onderhoudstaken_verdelen())        
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
 
