@@ -17,7 +17,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = 2 # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = 4 # pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -42,7 +42,7 @@ onderhoudstaken = db.execute_query(select_query)
 # print de omschrijving van de eerste onderhoudstaak
 print(onderhoudstaken[0]["omschrijving"])
 
-# functie voor het bepalen van de maximale fysieke belasting
+# Functie voor het bepalen van de maximale fysieke belasting
 def maximale_fysieke_belasting():
     if personeelslid["verlaagde_fysieke_belasting"] == 0:
         if personeelslid["leeftijd"] <= 24:
@@ -52,7 +52,7 @@ def maximale_fysieke_belasting():
         elif personeelslid["leeftijd"] >= 51:
             return 15
     else:
-        return personeelslid["verlaagde_fysieke_belasting"]
+        return personeelslid["verlaagde_fysieke_belasting"] # Advies arbo-arts is leidend
         
 def pauze_opgesplitst():
     if personeelslid["pauze_opsplitsen"] == 1:
@@ -156,6 +156,22 @@ def onderhoudstaken_verdelen():
     return passende_taken, totale_duur
               
 passende_taken, totale_duur = onderhoudstaken_verdelen()
+
+if personeelslid["werktijd"] > 330: # 5,5 uur 
+    helft_werktijd = personeelslid["werktijd"] / 2
+    gewerkte_minuten = 0
+
+    # Standaard moet de pauze altijd voor de laatste taak komen
+    pauze_plek = len(passende_taken) - 1
+
+    for index in range(len(passende_taken) - 1): # Pauze mag niet op het einde komen
+        gewerkte_minuten += passende_taken[index]["duur"]
+
+        if gewerkte_minuten >= helft_werktijd:
+            pauze_plek = index + 1
+            break
+
+    passende_taken.insert(pauze_plek, {"omschrijving": "Pauze", "duur": 30})
             
         
 # print(onderhoudstaken_verdelen())        
@@ -175,8 +191,6 @@ dagtakenlijst = {
         "pauze opsplitsen": pauze_opgesplitst(),
         "leeftijd": personeelslid["leeftijd"],
         "maximale fysieke belasting": maximale_fysieke_belasting()
-
-        #"verlaagde fysieke belasting": personeelslid["verlaagde_fysieke_belasting"]
     },
     "weergegevens" : {
         # STAP 4: vul aan met weergegevens (DP9)

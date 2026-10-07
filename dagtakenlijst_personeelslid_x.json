@@ -1,56 +1,40 @@
 {
     "personeelsgegevens": {
-        "naam": "Aisha Rahmani",
-        "werktijd": 300,
-        "beroepstype": "Elektrisch Monteur",
-        "bevoegdheid": "Junior",
-        "specialist in attracties": "Magic Forest",
-        "pauze opsplitsen": false,
-        "leeftijd": 26,
+        "naam": "Angela Bakker",
+        "werktijd": 360,
+        "beroepstype": "Onderhoudsmonteur",
+        "bevoegdheid": "Stagiair",
+        "specialist in attracties": "",
+        "pauze opsplitsen": true,
+        "leeftijd": 32,
         "maximale fysieke belasting": 40
     },
     "weergegevens": {},
     "dagtaken": [
         {
-            "omschrijving": "Inspectie van kabels",
-            "duur": 75,
-            "prioriteit": "hoog",
-            "beroepstype": "Elektrisch Monteur",
-            "bevoegdheid": "Junior",
-            "fysieke_belasting": 15,
-            "attractie": "Magic Forest",
+            "omschrijving": "Herstel van veiligheidsbeugels",
+            "duur": 90,
+            "prioriteit": "laag",
+            "beroepstype": "Onderhoudsmonteur",
+            "bevoegdheid": "Stagiair",
+            "fysieke_belasting": 10,
+            "attractie": "Family Carousel",
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Controle op veiligheidssensoren",
-            "duur": 120,
-            "prioriteit": "laag",
-            "beroepstype": "Elektrisch Monteur",
-            "bevoegdheid": "Junior",
-            "fysieke_belasting": 15,
-            "attractie": "Sky Diver",
-            "is_buitenwerk": 1
+            "omschrijving": "Pauze",
+            "duur": 30
         },
         {
-            "omschrijving": "Controle van algemene verlichting",
-            "duur": 50,
-            "prioriteit": "laag",
-            "beroepstype": "Elektrisch Monteur",
-            "bevoegdheid": "Junior",
-            "fysieke_belasting": 10,
-            "attractie": null,
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Controle van elektrische schakelaars",
+            "omschrijving": "Reiniging van kleine onderdelen",
             "duur": 30,
             "prioriteit": "laag",
-            "beroepstype": "Elektrisch Monteur",
-            "bevoegdheid": "Junior",
+            "beroepstype": "Onderhoudsmonteur",
+            "bevoegdheid": "Stagiair",
             "fysieke_belasting": 5,
-            "attractie": "Magic Forest",
+            "attractie": null,
             "is_buitenwerk": 1
         }
     ],
-    "totale_duur": 275
+    "totale_duur": 120
 }
