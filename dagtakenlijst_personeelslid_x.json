@@ -1,112 +1,58 @@
 {
     "personeelsgegevens": {
-        "naam": "Diego Martinez",
-        "werktijd": 360,
-        "beroepstype": "Schilder",
+        "naam": "Piet de Jong",
+        "werktijd": 240,
+        "beroepstype": "Mechanisch Monteur",
         "bevoegdheid": "Senior",
-        "specialist_in_attracties": "",
-        "pauze_opsplitsen": true,
-        "max_fysieke_belasting": 15
+        "specialist_in_attracties": "Mega Spin,River Rapids,Twister",
+        "pauze_opsplitsen": false,
+        "max_fysieke_belasting": 30
     },
     "weergegevens": {
         "temperatuur": 15.6,
-        "kans_op_regen": 46
+        "kans_op_regen": 42
     },
     "dagtaken": [
         {
-            "omschrijving": "Vervanging van panelen",
-            "duur": 60,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Junior",
-            "fysieke_belasting": 12,
-            "attractie": "Looping Dragon",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Herstel van decoratieve lampen",
-            "duur": 60,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Medior",
-            "fysieke_belasting": 8,
-            "attractie": "Sky Diver",
+            "omschrijving": "Mechanisch onderhoud aan scharnieren",
+            "duur": 45,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 25,
+            "attractie": "Twister",
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Schilderen van decoratieve randen",
+            "omschrijving": "Reparatie aan karretjes",
+            "duur": 120,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 20,
+            "attractie": "Galactic Journey",
+            "is_buitenwerk": 1
+        },
+        {
+            "omschrijving": "Herstel van dakconstructie",
             "duur": 30,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Medior",
-            "fysieke_belasting": 6,
-            "attractie": "River Rapids",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Aanbrengen van grondverf op relingen",
-            "duur": 45,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 6,
-            "attractie": "Magic Forest",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Pauze",
-            "duur": 30
-        },
-        {
-            "omschrijving": "Bijwerken van verf op houten banken",
-            "duur": 30,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 5,
-            "attractie": "Family Carousel",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Schoonmaken van verfkwasten en materialen",
-            "duur": 15,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 4,
+            "prioriteit": "hoog",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Senior",
+            "fysieke_belasting": 25,
             "attractie": null,
             "is_buitenwerk": 0
         },
         {
-            "omschrijving": "Schuren van houten oppervlakken",
-            "duur": 45,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 6,
-            "attractie": "Adventure Ride",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Schilderen van decoratieve randen op attracties",
+            "omschrijving": "Smering van tandwielen",
             "duur": 30,
             "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 5,
-            "attractie": "Mega Spin",
-            "is_buitenwerk": 1
-        },
-        {
-            "omschrijving": "Bijwerken van verf op attractiepanelen",
-            "duur": 30,
-            "prioriteit": "laag",
-            "beroepstype": "Schilder",
-            "bevoegdheid": "Stagiair",
-            "fysieke_belasting": 5,
-            "attractie": "Sky Diver",
+            "beroepstype": "Mechanisch Monteur",
+            "bevoegdheid": "Junior",
+            "fysieke_belasting": 8,
+            "attractie": "Rocket Ride",
             "is_buitenwerk": 1
         }
     ],
-    "totale_duur": 345
+    "totale_duur": 225
 }

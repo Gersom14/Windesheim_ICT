@@ -82,6 +82,17 @@ def maak_dagtaak(taak):
         "is_buitenwerk": taak["is_buitenwerk"]
     }
 
+def maak_personeelsgegevens(personeelslid):
+    return {
+        "naam": personeelslid["naam"],
+        "werktijd": personeelslid["werktijd"],
+        "beroepstype": personeelslid["beroepstype"],
+        "bevoegdheid": personeelslid["bevoegdheid"],
+        "specialist_in_attracties": personeelslid["specialist_in_attracties"],
+        "pauze_opsplitsen": pauze_opgesplitst(),
+        "max_fysieke_belasting": maximale_fysieke_belasting()
+    }
+
 # Het ophalen van de weergegevens door middel van de Meteo API
 def haal_weergegevens_op(breedtegraad, lengtegraad): 
     parameters = urlencode({
@@ -192,32 +203,14 @@ if personeelslid["werktijd"] > 330: # 5,5 uur
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
 
-
+# Vraag de personeelsgegevens op
+personeelgegevens = maak_personeelsgegevens(personeelslid)
 
 # verzamel alle benodigde gegevens in een dictionary
 dagtakenlijst = {
-    "personeelsgegevens" : {
-        "naam": personeelslid["naam"], # voorbeeld van hoe je bij een eigenschap komt
-        "werktijd": personeelslid["werktijd"],
-        "beroepstype": personeelslid["beroepstype"],
-        "bevoegdheid": personeelslid["bevoegdheid"],
-        "specialist_in_attracties": personeelslid["specialist_in_attracties"],
-        "pauze_opsplitsen": pauze_opgesplitst(),
-        "max_fysieke_belasting": maximale_fysieke_belasting()
-    },
+    "personeelsgegevens" : personeelgegevens,
     "weergegevens" : weergegevens, 
     "dagtaken": passende_taken
-        # TO-DO
-        # Een dagtaak moet op meerdere punten gestorteerd worden
-        # (AF) Het beroepstype past bij het beroep van het personeelslid 
-        # (AF) De taak heeft een lagere fysieke belasting dan de maximale belasting van het personeelslid
-        # (AF) Het personeel is bevoegd voor de taak
-        # Er moet op basis van de beschikbare werktijd van het personeel bepaald worden hoeveel onderhoudstaken in het programma komen
-        # Verschillende prioriteiteslevels
-        # De laatste taak moet verplicht een lage prioriteit hebben en max 30 minuten duren
-    
-
-     # STAP 2: hier komt een lijst met alle dagtaken
     ,
     "totale_duur": totale_duur # STAP 3: aanpassen naar daadwerkelijke totale duur
 }
