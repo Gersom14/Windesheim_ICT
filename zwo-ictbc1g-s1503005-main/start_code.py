@@ -19,7 +19,7 @@ db.connect()
 # -----------------------------------------
 # Haal de eigenschappen op van een bezoeker
 # -----------------------------------------
-personeelslid_id = input("Voor welk personeelslid wil je een dagtakenlijst aanmaken? ") # pas id aan om een ander personeelslid te selecteren
+personeelslid_id = input("Voor welk personeelslid wil je een dagtakenlijst aanmaken? ") # Pas id aan om een ander personeelslid te selecteren
 
 # SQL-query om alle gegevens van één personeelslid op te halen op basis van het ID.
 select_query = f"SELECT * FROM personeelslid WHERE id = {personeelslid_id}"
@@ -32,7 +32,7 @@ personeelslid = resultaat[0]
 # Haal alle onderhoudstaken op
 # -----------------------------------------
 # pas deze query aan en voeg queries toe om de juiste onderhoudstaken op te halen
-select_query = "SELECT * FROM onderhoudstaak WHERE afgerond = 0" # Alle onafgeronde onderhoudstaken
+select_query = "SELECT * FROM onderhoudstaak WHERE afgerond = 0" # Alle afgeronde onderhoudstaken worden eruit gefilterd
 onderhoudstaken = db.execute_query(select_query)
 
 # Functie voor het bepalen van de maximale fysieke belasting
@@ -46,35 +46,30 @@ def maximale_fysieke_belasting():
             return 15
     else:
         return personeelslid["verlaagde_fysieke_belasting"] # Advies arbo-arts is leidend
-        
+
+# Bepalen of de pauze opgesplitst moet worden
+# 1 of 0 omzetten naar True of False
 def pauze_opgesplitst():
     if personeelslid["pauze_opsplitsen"] == 1:
         return True
     else:
         return False
 
-# Bevoegdheid van het personeelslid wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
-def bevoegdheid_bepalen_personeelslid():
-    if personeelslid["bevoegdheid"] == "Senior":
-        return 1;
-    elif personeelslid["bevoegdheid"] == "Medior":
-        return 2;
-    elif personeelslid["bevoegdheid"] == "Junior":
-        return 3;
-    elif personeelslid["bevoegdheid"] == "Stagiair":
-        return 4;
+# Bevoegdheid van het personeelslid en de taak wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
+bevoegdheidniveaus = {
+    "Senior": 1,
+    "Medior": 2,
+    "Junior": 3,
+    "Stagiair": 4
+}
 
-# Bevoegdheid van de taak wordt opgedeeld in nummers. 1 = senior, 2 = medior, 3 = junior, 4 = stagiair
-def bevoegdheid_bepalen_taak(bevoegdheid):
-        if bevoegdheid == "Senior":
-            return 1;
-        if bevoegdheid == "Medior":
-            return 2;
-        if bevoegdheid == "Junior":
-            return 3;
-        if bevoegdheid == "Stagiair":
-            return 4;
+def is_bevoegd(personeelslid, taak):
+    bevoegdheid_persoon = bevoegdheidniveaus[personeelslid["bevoegdheid"]]
+    bevoegdheid_taak = bevoegdheidniveaus[taak["bevoegdheid"]]
 
+    return bevoegdheid_persoon <= bevoegdheid_taak
+
+# De dagtaak in JSON formaat zetten
 def maak_dagtaak(taak):
     return { 
         "omschrijving" : taak["omschrijving"],
@@ -87,7 +82,8 @@ def maak_dagtaak(taak):
         "is_buitenwerk": taak["is_buitenwerk"]
     }
 
-def haal_weergegevens_op(breedtegraad, lengtegraad): # Coordinaten op basis van database
+# Het ophalen van de weergegevens door middel van de Meteo API
+def haal_weergegevens_op(breedtegraad, lengtegraad): 
     parameters = urlencode({
         "latitude": breedtegraad,
         "longitude": lengtegraad,
@@ -106,11 +102,12 @@ def haal_weergegevens_op(breedtegraad, lengtegraad): # Coordinaten op basis van 
         "kans_op_regen": weerdata["daily"]["precipitation_probability_mean"][0]
     }
 
+# Lake Side Mania is gevestigd in Zwolle
 breedtegraad = 52.5125
 lengtegraad = 6.09444
 weergegevens = haal_weergegevens_op(breedtegraad, lengtegraad)
 
-
+# Lijsten voor de verschillende soorten attracties
 specialistische_attracties = personeelslid["specialist_in_attracties"].split(",") # Split bij elke komma
 hoog_specialistisch = []
 hoog_overig = []
@@ -145,7 +142,7 @@ def onderhoudstaken_verdelen():
         if (taak["duur"] <= 30
             and taak["duur"] <= personeelslid["werktijd"]
             and taak["beroepstype"] == personeelslid["beroepstype"]
-            and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
+            and is_bevoegd(personeelslid, taak)
             and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
             laatste_taak = taak
             break 
@@ -156,9 +153,10 @@ def onderhoudstaken_verdelen():
          # De laatste taak moet niet nog een x voorkomen
          if taak["id"] == laatste_taak["id"]:
              continue
-         
+
+         #Dagtaken filteren op meerdere eisen
          if (taak["beroepstype"] == personeelslid["beroepstype"] 
-             and bevoegdheid_bepalen_taak(taak["bevoegdheid"]) >= bevoegdheid_bepalen_personeelslid()
+             and is_bevoegd(personeelslid, taak)
              and taak["fysieke_belasting"] <= maximale_fysieke_belasting()):
 
             if taak['duur'] > resterende_werktijd:
@@ -184,14 +182,13 @@ if personeelslid["werktijd"] > 330: # 5,5 uur
     for index in range(len(passende_taken) - 1): # Pauze mag niet op het einde komen
         gewerkte_minuten += passende_taken[index]["duur"]
 
-        if gewerkte_minuten >= helft_werktijd:
+        if gewerkte_minuten >= helft_werktijd: # Na deze plek wordt de pauze ingevoegd
             pauze_plek = index + 1
             break
 
     passende_taken.insert(pauze_plek, {"omschrijving": "Pauze", "duur": 30})
             
         
-# print(onderhoudstaken_verdelen())        
 # altijd verbinding sluiten met de database als je klaar bent
 db.close()
 
