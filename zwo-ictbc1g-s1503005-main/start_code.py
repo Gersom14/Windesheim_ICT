@@ -146,10 +146,10 @@ gesorteerde_taken = hoog_specialistisch + hoog_overig + laag_specialistisch + la
 def onderhoudstaken_verdelen():
     passende_taken = []
     resterende_werktijd = personeelslid["werktijd"]
-    laatste_taak = ""
+    laatste_taak = None
 
     # Bepalen van de laatste taak
-    for taak in laag_overig: 
+    for taak in laag_specialistisch + laag_overig: 
         if (taak["duur"] <= 30
             and taak["duur"] <= personeelslid["werktijd"]
             and taak["beroepstype"] == personeelslid["beroepstype"]
